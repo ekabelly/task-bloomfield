@@ -1,10 +1,10 @@
 const axios = require('axios');
 
-const sendMessage = async messageId => {
-    const res = await axios.put(process.env.MESSAGES_DESTINATION_URL, { messageId });
+const sendMessages = async messageIdArr => {
+    const res = await axios.put(process.env.MESSAGES_DESTINATION_URL, { messages: messageIdArr });
     return res && res.status === 200;
 } 
 
 module.exports = {
-    sendMessage
+    sendMessages
 }

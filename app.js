@@ -4,6 +4,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const { connectToDb } = require('./db/conn');
 const usersLogic = require('./logic/users.logic');
+const messagesLogic = require('./logic/messages.logic');
 
 app.use(require('sanitize').middleware);
 app.use(bodyParser.json());
@@ -22,6 +23,7 @@ app.use((err, req, res) => {
 const startApp = () => {
     const port = process.env.PORT || 3000;
     app.listen(port, () => console.log(`test server up and running on port ${port}`));
+    messagesLogic.sendUnsentMessages();
 }
 
 connectToDb().then(startApp);

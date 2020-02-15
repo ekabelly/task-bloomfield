@@ -1,15 +1,15 @@
 const expect = require('chai').expect;
-const config = require('dotenv').config({ path: __dirname + `/../../.env.test` });
+require('dotenv').config({ path: __dirname + `/../../.env.test` });
 const { conn, connectToDb } = require('../../db/conn');
 const { createMessagesTable, createUsersTable } = require('../../db/create-tables');
 const { insertUsers } = require('../../db/users.wrap');
-const { insertMessage, updateMessage } = require('../../db/messages.wrap');
+const { insertMessage, getUnsentMessages, updateMessages } = require('../../db/messages.wrap');
 
 before(async () => {
     await connectToDb();
 })
 
-describe('Users', () => {
+describe('Users Unit Tests', () => {
     beforeEach(() => {
         conn.query('DROP TABLE users', () => {});
         createUsersTable(conn);
@@ -29,7 +29,7 @@ describe('Users', () => {
     });
 });
 
-describe('messages', () => {
+describe('Messages Unit Tests', () => {
     beforeEach(() => {
         conn.query('DROP TABLE messages', () => {});
         createMessagesTable(conn);
@@ -42,12 +42,21 @@ describe('messages', () => {
             expect(res[0]).to.include({ uniqueId: '1234', was_sent: 0 });
         });
     });
-
-    it('should update a message was_sent = true', async () => {
+    
+    it('should update messages was_sent = true', async () => {
         await insertMessage(['1234', new Date(), false]);
-        await updateMessage('1234');
-        conn.query('SELECT * from messages where uniqueId = 1234', (err, res) => {
-            expect(res[0]).to.include({ uniqueId: '1234', was_sent: 1 });
-        });
-    })
+        await updateMessages(['1234', '2222']);
+        conn.query('SELECT * from messages where uniqueId in (1234, 2222)', (err, res) => 
+            expect(res.every( message => message.was_sent)).to.be.true);
+    });
+
+    it('should return 3 unsent messages', async () => {
+        await Promise.all([
+            insertMessage(['1234', new Date(), false]),
+            insertMessage(['2222', new Date(), false]),
+            insertMessage(['3333', new Date(), false])
+        ]);
+        const unsentMessages = await getUnsentMessages();
+            expect(unsentMessages).to.have.length(3);
+    });
 })

@@ -1,13 +1,22 @@
 const messagesService = require('../services/messages.service');
-const { updateMessage } = require('../db/messages.wrap');
+const { updateMessages, getUnsentMessages,  } = require('../db/messages.wrap');
+
+const sendUnsentMessages = async () => {
+    const messages = await getUnsentMessages();
+    const messagesIdArr = messages.map(message => message.uniqueId);
+    await messagesService.sendMessages(messagesIdArr);
+    await updateMessages(messagesIdArr);
+}
 
 const handleMessageLogic = async messageId => {
-    const res = await messagesService.sendMessage(messageId);
+    // send messageId and then updates in db message was sent
+    const res = await messagesService.sendMessages([messageId]);
     if(res){
-        updateMessage(messageId);
+        updateMessages([messageId]);
     }
 }
 
 module.exports = {
-    handleMessageLogic
+    handleMessageLogic,
+    sendUnsentMessages
 }

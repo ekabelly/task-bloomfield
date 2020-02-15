@@ -8,9 +8,9 @@ const conn = mysql.createConnection({
 });
 
 const connectToDb = () => {
-  return new Promise((resolve, reject) => {
+  return new Promise(resolve => {
     conn.connect(async err => {
-      if(err){
+      if(err && err.code !== 'PROTOCOL_ENQUEUE_HANDSHAKE_TWICE'){
         console.error(err);
         return reject(err);
       } else {
