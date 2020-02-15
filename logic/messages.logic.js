@@ -3,9 +3,11 @@ const { updateMessages, getUnsentMessages,  } = require('../db/messages.wrap');
 
 const sendUnsentMessages = async () => {
     const messages = await getUnsentMessages();
-    const messagesIdArr = messages.map(message => message.uniqueId);
-    await messagesService.sendMessages(messagesIdArr);
-    await updateMessages(messagesIdArr);
+    if(messages.length > 0){
+        const messagesIdArr = messages.map(message => message.uniqueId);
+        await messagesService.sendMessages(messagesIdArr);
+        await updateMessages(messagesIdArr);
+    }
 }
 
 const handleMessageLogic = async messageId => {

@@ -1,0 +1,44 @@
+{
+	"info": {
+		"_postman_id": "62be72dd-e682-4fcd-95d2-39b4690b62aa",
+		"name": "bloomfield task",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:3000/users",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"users\":[\n\t{\n\t\t\"firstName\": \"ido\",\n\t\t\"lastName\": \"KAB\",\n\t\t\"occupation\": \"dev\"\n\t}\n]}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/users",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

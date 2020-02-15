@@ -4,7 +4,10 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "mocha test/**/*.js"
+    "create-db-test": "env NODE_ENV=test node db/create-db.js",
+    "test": "env NODE_ENV=test mocha test/**/*.js",
+    "create-db": "env NODE_ENV=dev node db/create-db.js",
+    "start": "env NODE_ENV=dev node app.js"
   },
   "author": "",
   "license": "ISC",
