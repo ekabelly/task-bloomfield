@@ -13,6 +13,7 @@ const mysqlConn = mysql.createConnection(dbconfig);
 const createDb = (resolve, reject) =>
     mysqlConn.query(`CREATE DATABASE ${process.env.DB_NAME}`, err => {
         if(err && err.code !== 'ER_DB_CREATE_EXISTS'){
+            console.error(err)
             reject();
         }
         resolve(true);
