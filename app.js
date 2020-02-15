@@ -1,23 +1,27 @@
+require('dotenv').config({ path: __dirname + `/.env.${process.env.NODE_ENV}` });
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const { connectToDb } = require('./db/conn');
+const usersLogic = require('./logic/users.logic');
 
-const conn = require('./db/conn');
-
+app.use(require('sanitize').middleware);
 app.use(bodyParser.json());
 
-
-let Test = 0;
-
-app.get('/test', (req, res, next) => {
-    Test++;
-    res.status(200).send({Test});
+app.post('/users', async (req, res, next) => {
+    await usersLogic.handleUsersCreation(req.body.users);
+    res.send({ success: true });
 });
 
-conn.connect(err => {
-    if(err){
-        console.error(err);
-    } else {
-        app.listen(3001, () => console.log(`test server up and running on port 3001`));
-    }
-})
+// catch all errors with express middleware
+app.use((err, req, res) => {
+    console.error(err);
+    res.status(500).send({ success: false, message: err })
+});
+
+const startApp = () => {
+    const port = process.env.PORT || 3000;
+    app.listen(port, () => console.log(`test server up and running on port ${port}`));
+}
+
+connectToDb().then(startApp);

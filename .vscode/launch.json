@@ -1,0 +1,57 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Program",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "env": {
+                "NODE_ENV": "dev"
+            },
+            "program": "${workspaceFolder}\\app.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "create database dev",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "env": {
+                "NODE_ENV": "dev"
+            },
+            "program": "${workspaceFolder}\\db\\create-db.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "create database test",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "env": {
+                "NODE_ENV": "test"
+            },
+            "program": "${workspaceFolder}\\db\\create-db.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Mocha Tests",
+            "program": "${workspaceRoot}/node_modules/mocha/bin/mocha",
+            "args": [
+                "--inspect-brk",
+                "--colors",
+                "${workspaceFolder}/test/**/*.js"
+            ],
+            "port": 9229,
+            "internalConsoleOptions": "openOnSessionStart"
+        }
+    ]
+}
